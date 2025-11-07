@@ -57,8 +57,8 @@ public class AhorcadoAzarFrame extends JFrame {
     }
 
     private void vista() {
-        setSize(450, 680);
-        setMinimumSize(new Dimension(450, 680));
+        setResizable(false);
+        setSize(450, 820);
         setLocationRelativeTo(null);
 
         JPanel panelPrincipal = new JPanel(new BorderLayout(16, 16));
@@ -69,13 +69,11 @@ public class AhorcadoAzarFrame extends JFrame {
         lblTitulo.setFont(new Font("SansSerif", Font.BOLD, 22));
         panelPrincipal.add(lblTitulo, BorderLayout.NORTH);
 
-        // ---- NUEVO LAYOUT VERTICAL ----
         JPanel panelCentro = new JPanel();
         panelCentro.setLayout(new BoxLayout(panelCentro, BoxLayout.Y_AXIS));
         panelPrincipal.add(panelCentro, BorderLayout.CENTER);
 
-        // Figura del ahorcado arriba
-        txtFigura = new JTextArea(15, 44);
+        txtFigura = new JTextArea(24, 44);
         txtFigura.setEditable(false);
         txtFigura.setFont(new Font("Monospaced", Font.PLAIN, 22));
         txtFigura.setLineWrap(false);
@@ -95,7 +93,8 @@ public class AhorcadoAzarFrame extends JFrame {
         lblTituloPalabra.setAlignmentX(Component.CENTER_ALIGNMENT);
         panelCentro.add(lblTituloPalabra);
 
-        taPalabra = new JTextArea(1, 40);
+        taPalabra = new JTextArea(2, 40);
+        taPalabra.setPreferredSize(new Dimension(taPalabra.getPreferredSize().width, 100));
         taPalabra.setFont(new Font("Monospaced", Font.BOLD, 30));
         taPalabra.setEditable(false);
         taPalabra.setLineWrap(false);
