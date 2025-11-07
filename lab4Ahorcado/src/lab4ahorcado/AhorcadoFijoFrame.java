@@ -165,7 +165,7 @@ public class AhorcadoFijoFrame extends JFrame {
             }
             var t = txtEntrada.getText().trim();
             if (t.length() != 1 || !Character.isLetter(t.charAt(0))) {
-                lblMensaje.setText("Ingresa solo UNA letra (A–Z).");
+                lblMensaje.setText("Ingresa solo una letra.");
                 txtEntrada.requestFocusInWindow();
                 txtEntrada.selectAll();
                 return;
@@ -237,7 +237,7 @@ public class AhorcadoFijoFrame extends JFrame {
             String current = fb.getDocument().getText(0, fb.getDocument().getLength());
             String one = seleccionarPrimeraLetra(string);
             if (one == null) {
-                mostrarAlerta("Ingresa solo UNA letra (A–Z).");
+                mostrarAlerta("Ingresa solo una letra.");
                 return;
             }
             fb.replace(0, current.length(), one, attr);
@@ -258,7 +258,7 @@ public class AhorcadoFijoFrame extends JFrame {
                     fb.replace(offset, length, text, attrs);
                     return;
                 }
-                mostrarAlerta("Ingresa solo UNA letra (A–Z).");
+                mostrarAlerta("Ingresa solo una letra.");
                 return;
             }
 

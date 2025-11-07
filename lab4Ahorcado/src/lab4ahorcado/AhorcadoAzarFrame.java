@@ -146,7 +146,6 @@ public class AhorcadoAzarFrame extends JFrame {
         panelAbajo.add(btnVolver);
         panelPrincipal.add(panelAbajo, BorderLayout.SOUTH);
 
-        // --- Acciones idénticas a antes ---
         btnEnviar.addActionListener(e -> {
             if (inputQueue == null) {
                 return;
@@ -163,12 +162,6 @@ public class AhorcadoAzarFrame extends JFrame {
             txtEntrada.requestFocusInWindow();
         });
         txtEntrada.addActionListener(e -> btnEnviar.doClick());
-
-        btnRendirse.addActionListener(e -> {
-            if (inputQueue != null) {
-                inputQueue.offer("Salir");
-            }
-        });
 
         btnVolver.addActionListener(e -> {
             if (inputQueue != null) {
