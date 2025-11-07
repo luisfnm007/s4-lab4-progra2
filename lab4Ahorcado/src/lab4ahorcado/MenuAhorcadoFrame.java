@@ -89,21 +89,6 @@ public class MenuAhorcadoFrame extends JFrame {
             }
         });
 
-<<<<<<< HEAD
-       /* btnCambiar.addActionListener(e -> {
-            this.setVisible(false);
-            SwingUtilities.invokeLater(() -> new CambiaPalabrasFrame(this).setVisible(true));
-        });
-        */
-        btnSalir.addActionListener(e -> System.exit(0));
-    }
-    
-    public static void main(String[] args) {
-        // TODO code application logic here
-         SwingUtilities.invokeLater(() -> new MenuAhorcadoFrame().setVisible(true));
-    }
-    
-=======
         /*
         btnCambiar.addActionListener(e -> {
             this.setVisible(false);
@@ -113,5 +98,4 @@ public class MenuAhorcadoFrame extends JFrame {
 
         btnSalir.addActionListener(e -> System.exit(0));
     }
->>>>>>> 2cc6d6956bd15eaeaffa7f5886d30b61bb368d34
 }
