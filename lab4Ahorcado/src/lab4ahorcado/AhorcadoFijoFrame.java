@@ -203,7 +203,7 @@ public class AhorcadoFijoFrame extends JFrame {
         });
     }
 
-    public static void updateView(String figura, String palabraBonita, int intentos, int limite,
+    public static void actualizarInfo(String figura, String palabraBonita, int intentos, int limite,
             List<Character> usadas, String mensaje) {
         SwingUtilities.invokeLater(() -> {
             txtFigura.setText(figura);
@@ -239,13 +239,13 @@ public class AhorcadoFijoFrame extends JFrame {
             }
 
             String current = fb.getDocument().getText(0, fb.getDocument().getLength());
-            String one = pickFirstLetter(string);
+            String one = seleccionarPrimeraLetra(string);
             if (one == null) {
-                beep("Ingresa solo UNA letra (A–Z).");
+                mostrarAlerta("Ingresa solo UNA letra (A–Z).");
                 return;
             }
             fb.replace(0, current.length(), one, attr);
-            clearMsg();
+            LimpiarMensaje();
         }
 
         @Override
@@ -255,19 +255,19 @@ public class AhorcadoFijoFrame extends JFrame {
             if (text == null) {
                 text = "";
             }
-            String one = pickFirstLetter(text);
+            String one = seleccionarPrimeraLetra(text);
             if (one == null) {
 
                 if (text.isEmpty()) {
                     fb.replace(offset, length, text, attrs);
                     return;
                 }
-                beep("Ingresa solo UNA letra (A–Z).");
+                mostrarAlerta("Ingresa solo UNA letra (A–Z).");
                 return;
             }
 
             fb.replace(0, current.length(), one, attrs);
-            clearMsg();
+            LimpiarMensaje();
         }
 
         @Override
@@ -275,7 +275,7 @@ public class AhorcadoFijoFrame extends JFrame {
             fb.remove(offset, length);
         }
 
-        private String pickFirstLetter(String s) {
+        private String seleccionarPrimeraLetra(String s) {
             for (int i = 0; i < s.length(); i++) {
                 char ch = s.charAt(i);
                 if (Character.isLetter(ch)) {
@@ -286,14 +286,14 @@ public class AhorcadoFijoFrame extends JFrame {
 
         }
 
-        private void beep(String msg) {
-            Toolkit.getDefaultToolkit().beep();
+        private void mostrarAlerta(String mensaje) {
+            JOptionPane.showMessageDialog(null, mensaje, "Aviso", JOptionPane.WARNING_MESSAGE);
             if (feedbackLabel != null) {
-                feedbackLabel.setText(msg);
+                feedbackLabel.setText(mensaje);
             }
         }
 
-        private void clearMsg() {
+        private void LimpiarMensaje() {
             if (feedbackLabel != null) {
                 feedbackLabel.setText(" ");
             }
