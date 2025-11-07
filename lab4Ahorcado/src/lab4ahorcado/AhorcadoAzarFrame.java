@@ -52,7 +52,7 @@ public class AhorcadoAzarFrame extends JFrame {
 
         new Thread(() -> {
             JuegoAhorcadoAzar juego = new JuegoAhorcadoAzar();
-            juego.jugar();
+            juego.Jugar();
         }, "hilo-juego-azar").start();
     }
 

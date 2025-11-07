@@ -53,90 +53,72 @@ public class AhorcadoFijoFrame extends JFrame {
 
         if (result == JOptionPane.OK_OPTION) {
             int indiceSeleccionado = comboPalabras.getSelectedIndex();
-
             construirGUI();
-
             new Thread(() -> {
                 var juego = new JuegoAhorcadoFijo(indiceSeleccionado);
                 juego.Jugar();
             }, "hilo-juego-fijo").start();
         } else {
-
             dispose();
             menuAnterior.setVisible(true);
         }
     }
 
     private void construirGUI() {
-        setSize(1100, 680);
-        setMinimumSize(new Dimension(900, 520));
+        setSize(800, 700);
+        setMinimumSize(new Dimension(700, 500));
         setLocationRelativeTo(null);
 
-        var root = new JPanel(new BorderLayout(16, 16));
+        var root = new JPanel();
+        root.setLayout(new BoxLayout(root, BoxLayout.Y_AXIS));
         root.setBorder(new EmptyBorder(14, 14, 14, 14));
         setContentPane(root);
 
-        var titulo = new JLabel("AHORCADO PALABRA FIJA", SwingConstants.CENTER);
-        titulo.setFont(new Font("Georgia", Font.ITALIC, 22));
-        root.add(titulo, BorderLayout.NORTH);
-
-        var centro = new JPanel(new GridLayout(1, 2, 16, 16));
-        root.add(centro, BorderLayout.CENTER);
-
-        txtFigura = new JTextArea(24, 44);
+        txtFigura = new JTextArea(15, 50);
         txtFigura.setEditable(false);
-        txtFigura.setFont(new Font("Monospaced", Font.PLAIN, 22));
-        txtFigura.setLineWrap(false);
+        txtFigura.setFont(new Font("Monospaced", Font.PLAIN, 20));
         txtFigura.setBackground(Color.WHITE);
-        txtFigura.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(210, 210, 210)),
-                new EmptyBorder(14, 14, 14, 14)
-        ));
-        var scFigura = new JScrollPane(txtFigura);
-        scFigura.setBorder(BorderFactory.createEmptyBorder());
-        centro.add(scFigura);
+        txtFigura.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
+        txtFigura.setAlignmentX(Component.CENTER_ALIGNMENT);
+        txtFigura.setText("Figura Ahorcado");
+        root.add(txtFigura);
+        root.add(Box.createVerticalStrut(20));
 
-        var derecha = new JPanel();
-        derecha.setLayout(new BoxLayout(derecha, BoxLayout.Y_AXIS));
-        derecha.setBorder(new EmptyBorder(6, 6, 6, 6));
-        centro.add(derecha);
-
-        lblTituloPalabra = new JLabel("Palabra:");
-        lblTituloPalabra.setFont(new Font("Georgia", Font.ITALIC, 16));
-        lblTituloPalabra.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-        taPalabra = new JTextArea(1, 40);
-        taPalabra.setFont(new Font("Monospaced", Font.BOLD, 30));
+        taPalabra = new JTextArea(2, 20);
+        taPalabra.setFont(new Font("Monospaced", Font.BOLD, 28));
         taPalabra.setEditable(false);
-        taPalabra.setLineWrap(false);
-        taPalabra.setWrapStyleWord(false);
-        taPalabra.setBackground(new Color(248, 248, 248));
-        taPalabra.setBorder(new EmptyBorder(6, 8, 6, 8));
-        var scPalabra = new JScrollPane(taPalabra,
-                ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER,
-                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        scPalabra.setAlignmentX(Component.LEFT_ALIGNMENT);
+        taPalabra.setBackground(Color.WHITE);
+        taPalabra.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
+        taPalabra.setAlignmentX(Component.CENTER_ALIGNMENT);
+        taPalabra.setText("Palabra a Buscar");
+        root.add(taPalabra);
+        root.add(Box.createVerticalStrut(20));
+
+        var panelInferior = new JPanel();
+        panelInferior.setLayout(new BoxLayout(panelInferior, BoxLayout.Y_AXIS));
+        panelInferior.setAlignmentX(Component.CENTER_ALIGNMENT);
+        root.add(panelInferior);
 
         lblIntentos = new JLabel("Intentos: 0 / 6");
         lblIntentos.setFont(new Font("SansSerif", Font.PLAIN, 16));
-        lblIntentos.setAlignmentX(Component.LEFT_ALIGNMENT);
+        lblIntentos.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelInferior.add(lblIntentos);
 
         lblLetras = new JLabel("Letras usadas: —");
-        lblLetras.setFont(new Font("SansSerif", Font.PLAIN, 14));
-        lblLetras.setAlignmentX(Component.LEFT_ALIGNMENT);
+        lblLetras.setFont(new Font("SansSerif", Font.PLAIN, 16));
+        lblLetras.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelInferior.add(lblLetras);
 
         lblMensaje = new JLabel(" ");
         lblMensaje.setFont(new Font("SansSerif", Font.ITALIC, 14));
         lblMensaje.setForeground(new Color(50, 100, 185));
-        lblMensaje.setAlignmentX(Component.LEFT_ALIGNMENT);
+        lblMensaje.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelInferior.add(lblMensaje);
 
-        panelJuego = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
-        panelJuego.setAlignmentX(Component.LEFT_ALIGNMENT);
-
+        panelJuego = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         var lbl = new JLabel("Letra:");
-        txtEntrada = new JTextField(20);
+        txtEntrada = new JTextField(5);
         txtEntrada.setFont(new Font("SansSerif", Font.PLAIN, 16));
-
         ((AbstractDocument) txtEntrada.getDocument()).setDocumentFilter(new SingleLetterFilter(lblMensaje));
 
         btnEnviar = new JButton("Probar");
@@ -145,28 +127,15 @@ public class AhorcadoFijoFrame extends JFrame {
         panelJuego.add(txtEntrada);
         panelJuego.add(btnEnviar);
         panelJuego.add(btnRendirse);
-
-        derecha.add(lblTituloPalabra);
-        derecha.add(Box.createVerticalStrut(6));
-        derecha.add(scPalabra);
-        derecha.add(Box.createVerticalStrut(12));
-        derecha.add(lblIntentos);
-        derecha.add(Box.createVerticalStrut(4));
-        derecha.add(lblLetras);
-        derecha.add(Box.createVerticalStrut(10));
-        derecha.add(lblMensaje);
-        derecha.add(Box.createVerticalStrut(12));
-        derecha.add(panelJuego);
+        panelInferior.add(panelJuego);
 
         var abajo = new JPanel(new FlowLayout(FlowLayout.CENTER, 14, 8));
         btnVolver = new JButton("Volver al Menu");
         abajo.add(btnVolver);
-        root.add(abajo, BorderLayout.SOUTH);
+        root.add(abajo);
 
         btnEnviar.addActionListener(e -> {
-            if (entrada == null) {
-                return;
-            }
+            if (entrada == null) return;
             var t = txtEntrada.getText().trim();
             if (t.length() != 1 || !Character.isLetter(t.charAt(0))) {
                 lblMensaje.setText("Ingresa solo UNA letra (A–Z).");
@@ -181,15 +150,11 @@ public class AhorcadoFijoFrame extends JFrame {
         txtEntrada.addActionListener(e -> btnEnviar.doClick());
 
         btnRendirse.addActionListener(e -> {
-            if (entrada != null) {
-                entrada.offer("SALIR");
-            }
+            if (entrada != null) entrada.offer("SALIR");
         });
 
         btnVolver.addActionListener(e -> {
-            if (entrada != null) {
-                entrada.offer("SALIR");
-            }
+            if (entrada != null) entrada.offer("SALIR");
             dispose();
             menuAnterior.setVisible(true);
         });
@@ -208,7 +173,6 @@ public class AhorcadoFijoFrame extends JFrame {
         SwingUtilities.invokeLater(() -> {
             txtFigura.setText(figura);
             taPalabra.setText(palabraBonita);
-            taPalabra.setCaretPosition(0);
             lblIntentos.setText("Intentos: " + intentos + " / " + limite);
             lblLetras.setText("Letras usadas: " + (usadas.isEmpty() ? "—" : usadas.toString()));
             lblMensaje.setText(mensaje == null ? " " : mensaje);
@@ -224,79 +188,53 @@ public class AhorcadoFijoFrame extends JFrame {
     }
 
     private static class SingleLetterFilter extends DocumentFilter {
-
         private final JLabel feedbackLabel;
-
-        SingleLetterFilter(JLabel feedbackLabel) {
-            this.feedbackLabel = feedbackLabel;
-        }
+        SingleLetterFilter(JLabel feedbackLabel) { this.feedbackLabel = feedbackLabel; }
 
         @Override
-        public void insertString(DocumentFilter.FilterBypass fb, int offset, String string, AttributeSet attr)
+        public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr)
                 throws BadLocationException {
-            if (string == null) {
-                return;
-            }
-
-            String current = fb.getDocument().getText(0, fb.getDocument().getLength());
+            if (string == null) return;
             String one = seleccionarPrimeraLetra(string);
-            if (one == null) {
-                mostrarAlerta("Ingresa solo UNA letra (A–Z).");
-                return;
-            }
-            fb.replace(0, current.length(), one, attr);
+            if (one == null) { mostrarAlerta("Ingresa solo UNA letra (A–Z)."); return; }
+            fb.replace(0, fb.getDocument().getLength(), one, attr);
             LimpiarMensaje();
         }
 
         @Override
-        public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
+        public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
                 throws BadLocationException {
-            String current = fb.getDocument().getText(0, fb.getDocument().getLength());
-            if (text == null) {
-                text = "";
-            }
+            if (text == null) text = "";
             String one = seleccionarPrimeraLetra(text);
             if (one == null) {
-
-                if (text.isEmpty()) {
-                    fb.replace(offset, length, text, attrs);
-                    return;
-                }
+                if (text.isEmpty()) { fb.replace(offset, length, text, attrs); return; }
                 mostrarAlerta("Ingresa solo UNA letra (A–Z).");
                 return;
             }
-
-            fb.replace(0, current.length(), one, attrs);
+            fb.replace(0, fb.getDocument().getLength(), one, attrs);
             LimpiarMensaje();
         }
 
         @Override
-        public void remove(DocumentFilter.FilterBypass fb, int offset, int length) throws BadLocationException {
+        public void remove(FilterBypass fb, int offset, int length) throws BadLocationException {
             fb.remove(offset, length);
         }
 
         private String seleccionarPrimeraLetra(String s) {
             for (int i = 0; i < s.length(); i++) {
                 char ch = s.charAt(i);
-                if (Character.isLetter(ch)) {
-                    return String.valueOf(ch);
-                }
+                if (Character.isLetter(ch)) return String.valueOf(ch);
             }
             return null;
-
         }
 
         private void mostrarAlerta(String mensaje) {
             JOptionPane.showMessageDialog(null, mensaje, "Aviso", JOptionPane.WARNING_MESSAGE);
-            if (feedbackLabel != null) {
-                feedbackLabel.setText(mensaje);
-            }
+            if (feedbackLabel != null) feedbackLabel.setText(mensaje);
         }
 
         private void LimpiarMensaje() {
-            if (feedbackLabel != null) {
-                feedbackLabel.setText(" ");
-            }
+            if (feedbackLabel != null) feedbackLabel.setText(" ");
         }
     }
 }

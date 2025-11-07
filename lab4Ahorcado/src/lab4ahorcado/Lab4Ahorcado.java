@@ -14,7 +14,7 @@ public class Lab4Ahorcado   {
     
     public static void main(String[] args) {
         // TODO code application logic here
-         SwingUtilities.invokeLater(() -> new Lab4Ahorcado().setVisible(true));
+         SwingUtilities.invokeLater(() -> new MenuAhorcadoFrame().setVisible(true));
     }
     
 }

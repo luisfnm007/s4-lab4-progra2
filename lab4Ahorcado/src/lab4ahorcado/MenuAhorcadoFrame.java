@@ -64,12 +64,12 @@ public class MenuAhorcadoFrame extends JFrame {
 
         btnAzar.addActionListener(e -> {
             this.setVisible(false);
-            JuegoAzarFrame juegoAzar = new JuegoAzarFrame(this);
+            AhorcadoAzarFrame juegoAzar = new AhorcadoAzarFrame(this);
             juegoAzar.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             juegoAzar.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosed(WindowEvent e) {
-                    Lab4Ahorcado.this.setVisible(true);
+                    MenuAhorcadoFrame.this.setVisible(true);
                 }
             });
             juegoAzar.setVisible(true);
@@ -89,17 +89,17 @@ public class MenuAhorcadoFrame extends JFrame {
             }
         });
 
-        btnCambiar.addActionListener(e -> {
+       /* btnCambiar.addActionListener(e -> {
             this.setVisible(false);
             SwingUtilities.invokeLater(() -> new CambiaPalabrasFrame(this).setVisible(true));
         });
-
+        */
         btnSalir.addActionListener(e -> System.exit(0));
     }
     
     public static void main(String[] args) {
         // TODO code application logic here
-         SwingUtilities.invokeLater(() -> new Lab4Ahorcado().setVisible(true));
+         SwingUtilities.invokeLater(() -> new MenuAhorcadoFrame().setVisible(true));
     }
     
 }
