@@ -5,8 +5,6 @@
 package lab4ahorcado;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -130,7 +128,7 @@ public class JuegoAhorcadoFijo extends JuegoAhorcadoBase {
         BlockingQueue<String> entradas = new LinkedBlockingQueue<>();
         AhorcadoFijoFrame.bindInputQueue(entradas);
 
-        AhorcadoFijoFrame.updateView(
+        AhorcadoFijoFrame.actualizarInfo(
                 figuraAhorcado.get(0),
                 formatearConEspacios(palabraActual),
                 Intentos, Max_Intentos, letraUsadas,
@@ -152,7 +150,7 @@ public class JuegoAhorcadoFijo extends JuegoAhorcadoBase {
                 verificarLetra();
 
                 int paso = Math.min(Intentos, figuraAhorcado.size() - 1);
-                AhorcadoFijoFrame.updateView(
+                AhorcadoFijoFrame.actualizarInfo(
                         figuraAhorcado.get(paso),
                         formatearConEspacios(palabraActual),
                         Intentos, Max_Intentos, letraUsadas,
@@ -173,7 +171,7 @@ public class JuegoAhorcadoFijo extends JuegoAhorcadoBase {
             msjFinal = "Mala suerte, perdiste. La palabra era: " + palabraSecreta;
         }
 
-        AhorcadoFijoFrame.updateView(figuraAhorcado.get(paso),
+        AhorcadoFijoFrame.actualizarInfo(figuraAhorcado.get(paso),
                 formatearConEspacios(palabraActual),
                 Intentos, Max_Intentos, letraUsadas,
                 msjFinal
