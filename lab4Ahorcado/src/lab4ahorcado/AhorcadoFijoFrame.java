@@ -14,7 +14,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
-
+  
 /**
  *
  * @author Nathan
@@ -54,7 +54,7 @@ public class AhorcadoFijoFrame extends JFrame {
         if (result == JOptionPane.OK_OPTION) {
             int indiceSeleccionado = comboPalabras.getSelectedIndex();
 
-            construirGUI();
+            vista();
 
             new Thread(() -> {
                 var juego = new JuegoAhorcadoFijo(indiceSeleccionado);
@@ -67,9 +67,9 @@ public class AhorcadoFijoFrame extends JFrame {
         }
     }
 
-    private void construirGUI() {
-        setSize(1100, 680);
-        setMinimumSize(new Dimension(900, 520));
+    private void vista() {
+        setResizable(false);
+        setSize(450, 820);
         setLocationRelativeTo(null);
 
         var root = new JPanel(new BorderLayout(16, 16));
@@ -80,7 +80,8 @@ public class AhorcadoFijoFrame extends JFrame {
         titulo.setFont(new Font("Georgia", Font.ITALIC, 22));
         root.add(titulo, BorderLayout.NORTH);
 
-        var centro = new JPanel(new GridLayout(1, 2, 16, 16));
+        var centro = new JPanel();
+        centro.setLayout(new BoxLayout(centro, BoxLayout.Y_AXIS));
         root.add(centro, BorderLayout.CENTER);
 
         txtFigura = new JTextArea(24, 44);
@@ -94,18 +95,17 @@ public class AhorcadoFijoFrame extends JFrame {
         ));
         var scFigura = new JScrollPane(txtFigura);
         scFigura.setBorder(BorderFactory.createEmptyBorder());
+        scFigura.setAlignmentX(Component.CENTER_ALIGNMENT);
         centro.add(scFigura);
-
-        var derecha = new JPanel();
-        derecha.setLayout(new BoxLayout(derecha, BoxLayout.Y_AXIS));
-        derecha.setBorder(new EmptyBorder(6, 6, 6, 6));
-        centro.add(derecha);
+        centro.add(Box.createVerticalStrut(10));
 
         lblTituloPalabra = new JLabel("Palabra:");
         lblTituloPalabra.setFont(new Font("Georgia", Font.ITALIC, 16));
-        lblTituloPalabra.setAlignmentX(Component.LEFT_ALIGNMENT);
+        lblTituloPalabra.setAlignmentX(Component.CENTER_ALIGNMENT);
+        centro.add(lblTituloPalabra);
 
-        taPalabra = new JTextArea(1, 40);
+        taPalabra = new JTextArea(2, 40);
+        taPalabra.setPreferredSize(new Dimension(taPalabra.getPreferredSize().width, 100));
         taPalabra.setFont(new Font("Monospaced", Font.BOLD, 30));
         taPalabra.setEditable(false);
         taPalabra.setLineWrap(false);
@@ -115,28 +115,35 @@ public class AhorcadoFijoFrame extends JFrame {
         var scPalabra = new JScrollPane(taPalabra,
                 ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER,
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        scPalabra.setAlignmentX(Component.LEFT_ALIGNMENT);
+        scPalabra.setAlignmentX(Component.CENTER_ALIGNMENT);
+        centro.add(scPalabra);
+        centro.add(Box.createVerticalStrut(10));
 
         lblIntentos = new JLabel("Intentos: 0 / 6");
         lblIntentos.setFont(new Font("SansSerif", Font.PLAIN, 16));
-        lblIntentos.setAlignmentX(Component.LEFT_ALIGNMENT);
+        lblIntentos.setAlignmentX(Component.CENTER_ALIGNMENT);
+        centro.add(lblIntentos);
+        centro.add(Box.createVerticalStrut(4));
 
         lblLetras = new JLabel("Letras usadas: —");
         lblLetras.setFont(new Font("SansSerif", Font.PLAIN, 14));
-        lblLetras.setAlignmentX(Component.LEFT_ALIGNMENT);
+        lblLetras.setAlignmentX(Component.CENTER_ALIGNMENT);
+        centro.add(lblLetras);
+        centro.add(Box.createVerticalStrut(10));
 
         lblMensaje = new JLabel(" ");
         lblMensaje.setFont(new Font("SansSerif", Font.ITALIC, 14));
         lblMensaje.setForeground(new Color(50, 100, 185));
-        lblMensaje.setAlignmentX(Component.LEFT_ALIGNMENT);
+        lblMensaje.setAlignmentX(Component.CENTER_ALIGNMENT);
+        centro.add(lblMensaje);
+        centro.add(Box.createVerticalStrut(12));
 
-        panelJuego = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
-        panelJuego.setAlignmentX(Component.LEFT_ALIGNMENT);
+        panelJuego = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        panelJuego.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         var lbl = new JLabel("Letra:");
         txtEntrada = new JTextField(20);
         txtEntrada.setFont(new Font("SansSerif", Font.PLAIN, 16));
-
         ((AbstractDocument) txtEntrada.getDocument()).setDocumentFilter(new SingleLetterFilter(lblMensaje));
 
         btnEnviar = new JButton("Probar");
@@ -145,18 +152,7 @@ public class AhorcadoFijoFrame extends JFrame {
         panelJuego.add(txtEntrada);
         panelJuego.add(btnEnviar);
         panelJuego.add(btnRendirse);
-
-        derecha.add(lblTituloPalabra);
-        derecha.add(Box.createVerticalStrut(6));
-        derecha.add(scPalabra);
-        derecha.add(Box.createVerticalStrut(12));
-        derecha.add(lblIntentos);
-        derecha.add(Box.createVerticalStrut(4));
-        derecha.add(lblLetras);
-        derecha.add(Box.createVerticalStrut(10));
-        derecha.add(lblMensaje);
-        derecha.add(Box.createVerticalStrut(12));
-        derecha.add(panelJuego);
+        centro.add(panelJuego);
 
         var abajo = new JPanel(new FlowLayout(FlowLayout.CENTER, 14, 8));
         btnVolver = new JButton("Volver al Menu");
