@@ -12,5 +12,5 @@ public interface JuegoAhorcado {
     String inicializarPalabraSecreta();
     
     
-    void Jugar();
+    void Jugar(); 
 }

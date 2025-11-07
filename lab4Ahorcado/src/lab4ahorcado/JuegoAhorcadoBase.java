@@ -17,6 +17,23 @@ public abstract class JuegoAhorcadoBase implements JuegoAhorcado{
     public int Intentos;
     public int Max_Intentos;
     
-    public static ArrayList<Character> letraSeleccionadas= new ArrayList<>();
-    public static ArrayList<String> letraSeleccionadas= new ArrayList<>();
+    public static ArrayList<Character> letraUsadas= new ArrayList<>();
+    public static ArrayList<String> figuraAhorcado= new ArrayList<>();
+    
+    public JuegoAhorcadoBase(){
+        this.Intentos=0;
+        this.Max_Intentos=6;
+    }
+    
+    public String actualizarPalabraActual(String palabraSecreta){
+        return palabraActual;
+    }
+    
+    public boolean verificarLetra(){
+        return true;
+    }
+    
+    public boolean hasGanado(){
+        return true; 
+    }
 }
