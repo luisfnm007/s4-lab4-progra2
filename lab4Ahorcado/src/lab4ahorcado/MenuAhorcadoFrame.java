@@ -89,12 +89,11 @@ public class MenuAhorcadoFrame extends JFrame {
             }
         });
 
-        /*
+        
         btnCambiar.addActionListener(e -> {
             this.setVisible(false);
-            SwingUtilities.invokeLater(() -> new CambiaPalabrasFrame(this).setVisible(true));
+            SwingUtilities.invokeLater(() -> new CambiarPalabraFrame(this).setVisible(true));
         });
-*/
 
         btnSalir.addActionListener(e -> System.exit(0));
     }

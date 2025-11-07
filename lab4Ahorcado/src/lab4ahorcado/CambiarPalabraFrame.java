@@ -198,11 +198,4 @@ public class CambiarPalabraFrame extends JFrame {
     private void mostrarError(String msg) {
         JOptionPane.showMessageDialog(this, msg, "Error", JOptionPane.ERROR_MESSAGE);
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            CambiarPalabraFrame f = new CambiarPalabraFrame(null);
-            f.setVisible(true);
-        });
-    }
 }
