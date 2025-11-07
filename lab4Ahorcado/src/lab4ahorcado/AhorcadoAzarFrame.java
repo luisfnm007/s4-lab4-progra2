@@ -52,27 +52,30 @@ public class AhorcadoAzarFrame extends JFrame {
 
         new Thread(() -> {
             JuegoAhorcadoAzar juego = new JuegoAhorcadoAzar();
-            juego.jugar();
+            juego.Jugar();
         }, "hilo-juego-azar").start();
     }
 
     private void vista() {
-        setSize(1100, 680);
-        setMinimumSize(new Dimension(900, 520));
+        setSize(450, 680);
+        setMinimumSize(new Dimension(450, 680));
         setLocationRelativeTo(null);
 
         JPanel panelPrincipal = new JPanel(new BorderLayout(16, 16));
         panelPrincipal.setBorder(new EmptyBorder(14, 14, 14, 14));
         setContentPane(panelPrincipal);
 
-        JLabel lblTitulo = new JLabel("Ahorcado Aletorio", SwingConstants.CENTER);
+        JLabel lblTitulo = new JLabel("Ahorcado Aleatorio", SwingConstants.CENTER);
         lblTitulo.setFont(new Font("SansSerif", Font.BOLD, 22));
         panelPrincipal.add(lblTitulo, BorderLayout.NORTH);
 
-        JPanel panelCentro = new JPanel(new GridLayout(1, 2, 16, 16));
+        // ---- NUEVO LAYOUT VERTICAL ----
+        JPanel panelCentro = new JPanel();
+        panelCentro.setLayout(new BoxLayout(panelCentro, BoxLayout.Y_AXIS));
         panelPrincipal.add(panelCentro, BorderLayout.CENTER);
 
-        txtFigura = new JTextArea(24, 44);
+        // Figura del ahorcado arriba
+        txtFigura = new JTextArea(15, 44);
         txtFigura.setEditable(false);
         txtFigura.setFont(new Font("Monospaced", Font.PLAIN, 22));
         txtFigura.setLineWrap(false);
@@ -81,79 +84,70 @@ public class AhorcadoAzarFrame extends JFrame {
                 BorderFactory.createLineBorder(new Color(210, 210, 210)),
                 new EmptyBorder(14, 14, 14, 14)
         ));
-
         JScrollPane spMunieco = new JScrollPane(txtFigura);
         spMunieco.setBorder(BorderFactory.createEmptyBorder());
+        spMunieco.setAlignmentX(Component.CENTER_ALIGNMENT);
         panelCentro.add(spMunieco);
-
-        JPanel panelDerecha = new JPanel();
-        panelDerecha.setLayout(new BoxLayout(panelDerecha, BoxLayout.Y_AXIS));
-        panelDerecha.setBorder(new EmptyBorder(6, 6, 6, 6));
-        panelCentro.add(panelDerecha);
+        panelCentro.add(Box.createVerticalStrut(10));
 
         lblTituloPalabra = new JLabel("Palabra:");
         lblTituloPalabra.setFont(new Font("SansSerif", Font.BOLD, 16));
-        lblTituloPalabra.setAlignmentX(Component.LEFT_ALIGNMENT);
+        lblTituloPalabra.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelCentro.add(lblTituloPalabra);
 
         taPalabra = new JTextArea(1, 40);
         taPalabra.setFont(new Font("Monospaced", Font.BOLD, 30));
         taPalabra.setEditable(false);
         taPalabra.setLineWrap(false);
-        taPalabra.setWrapStyleWord(false);
         taPalabra.setBackground(new Color(248, 248, 248));
         taPalabra.setBorder(new EmptyBorder(6, 8, 6, 8));
         JScrollPane scPalabra = new JScrollPane(taPalabra,
                 ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER,
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        scPalabra.setAlignmentX(Component.LEFT_ALIGNMENT);
+        scPalabra.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelCentro.add(scPalabra);
+        panelCentro.add(Box.createVerticalStrut(10));
 
-        lblIntentos = new JLabel("0/6 Intentos");
+        lblIntentos = new JLabel("Intentos: 0 / 6");
         lblIntentos.setFont(new Font("SansSerif", Font.PLAIN, 16));
-        lblIntentos.setAlignmentX(Component.LEFT_ALIGNMENT);
+        lblIntentos.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        lblLetras = new JLabel("Letras usadas:  ");
+        lblLetras = new JLabel("Letras usadas: —");
         lblLetras.setFont(new Font("SansSerif", Font.PLAIN, 14));
-        lblLetras.setAlignmentX(Component.LEFT_ALIGNMENT);
+        lblLetras.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         lblMensaje = new JLabel(" ");
         lblMensaje.setFont(new Font("SansSerif", Font.ITALIC, 14));
         lblMensaje.setForeground(new Color(50, 100, 185));
-        lblMensaje.setAlignmentX(Component.LEFT_ALIGNMENT);
+        lblMensaje.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JPanel panelJuego = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
-        panelJuego.setAlignmentX(Component.LEFT_ALIGNMENT);
+        panelCentro.add(lblIntentos);
+        panelCentro.add(Box.createVerticalStrut(4));
+        panelCentro.add(lblLetras);
+        panelCentro.add(Box.createVerticalStrut(4));
+        panelCentro.add(lblMensaje);
+        panelCentro.add(Box.createVerticalStrut(8));
 
+        JPanel panelJuego = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         JLabel lblLetra = new JLabel("Letra: ");
         txtEntrada = new JTextField(20);
         txtEntrada.setFont(new Font("SansSerif", Font.PLAIN, 16));
-
         ((AbstractDocument) txtEntrada.getDocument()).setDocumentFilter(new SingleLetterFilter(lblMensaje));
-
         btnEnviar = new JButton("Intentar");
         btnRendirse = new JButton("Rendirse");
-        btnVolver = new JButton("Volver al Menú");
-
         panelJuego.add(lblLetra);
         panelJuego.add(txtEntrada);
         panelJuego.add(btnEnviar);
         panelJuego.add(btnRendirse);
+        panelCentro.add(panelJuego);
 
-        panelDerecha.add(lblTituloPalabra);
-        panelDerecha.add(Box.createVerticalStrut(6));
-        panelDerecha.add(scPalabra);
-        panelDerecha.add(Box.createVerticalStrut(12));
-        panelDerecha.add(lblIntentos);
-        panelDerecha.add(Box.createVerticalStrut(4));
-        panelDerecha.add(lblLetras);
-        panelDerecha.add(Box.createVerticalStrut(10));
-        panelDerecha.add(lblMensaje);
-        panelDerecha.add(Box.createVerticalStrut(12));
-        panelDerecha.add(panelJuego);
-
+        // Botón volver abajo del todo
         JPanel panelAbajo = new JPanel(new FlowLayout(FlowLayout.CENTER, 14, 8));
+        btnVolver = new JButton("Volver al Menú");
         panelAbajo.add(btnVolver);
         panelPrincipal.add(panelAbajo, BorderLayout.SOUTH);
 
+        // --- Acciones idénticas a antes ---
         btnEnviar.addActionListener(e -> {
             if (inputQueue == null) {
                 return;
@@ -242,8 +236,7 @@ public class AhorcadoAzarFrame extends JFrame {
         }
 
         @Override
-        public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs)throws BadLocationException 
-        {
+        public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
             String current = fb.getDocument().getText(0, fb.getDocument().getLength());
             if (text == null) {
                 text = "";
@@ -262,8 +255,7 @@ public class AhorcadoAzarFrame extends JFrame {
         }
 
         @Override
-        public void remove(FilterBypass paso, int posicion, int cantidad) throws BadLocationException 
-        {
+        public void remove(FilterBypass paso, int posicion, int cantidad) throws BadLocationException {
             paso.remove(posicion, cantidad);
         }
 
@@ -275,8 +267,7 @@ public class AhorcadoAzarFrame extends JFrame {
             return buscador.find() ? buscador.group() : null;
         }
 
-        private void mostrarAlerta(String mensaje) 
-        {
+        private void mostrarAlerta(String mensaje) {
             JOptionPane.showMessageDialog(null, mensaje, "Aviso", JOptionPane.WARNING_MESSAGE);
             if (lblEstado != null) {
                 lblEstado.setText(mensaje);

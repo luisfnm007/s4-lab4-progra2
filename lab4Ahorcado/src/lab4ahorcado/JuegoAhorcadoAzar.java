@@ -222,7 +222,7 @@ public class JuegoAhorcadoAzar extends JuegoAhorcadoBase {
         while (!hasGanado() && Intentos < Max_Intentos && !abandonar) {
             try {
                 String jugada = queue.take();
-                if ("SALIR".equals(jugada)) {
+                if ("SALIR".equalsIgnoreCase(jugada)) {
                     abandonar = true;
                     break;
                 }
@@ -231,7 +231,7 @@ public class JuegoAhorcadoAzar extends JuegoAhorcadoBase {
 
                 
                 int paso = Math.min(Intentos, figuraAhorcado.size() - 1);
-                AhorcadoFijoFrame.actualizarInfo(
+                AhorcadoAzarFrame.actualizarInfo(
                         figuraAhorcado.get(paso),
                         formatearConEspacios(palabraActual),
                         Intentos, Max_Intentos, letraUsadas,
