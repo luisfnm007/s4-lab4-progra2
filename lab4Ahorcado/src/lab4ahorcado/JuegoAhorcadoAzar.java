@@ -6,6 +6,8 @@ package lab4ahorcado;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  *
@@ -67,13 +69,13 @@ public class JuegoAhorcadoAzar extends JuegoAhorcadoBase {
         this.palabraActual = resultado.toString();
         return this.palabraActual;
     }
-    
+
     public boolean verificarLetra() {
         if (ultimaEntrada == null || ultimaEntrada.trim().isEmpty()) {
             ultimoMensaje = "Entrada vacía";
             return false;
         }
-        
+
         String entrada = ultimaEntrada.trim();
         ultimaEntrada = null;
 
@@ -104,23 +106,23 @@ public class JuegoAhorcadoAzar extends JuegoAhorcadoBase {
 
         letraUsadas.add(c);
         boolean acierto = palabraSecreta.toLowerCase().indexOf(c) >= 0;
-        
+
         if (acierto) {
             ultimoMensaje = "¡Acierto!";
         } else {
             this.Intentos++;
             ultimoMensaje = "La letra '" + c + "' no está";
         }
-        
+
         actualizarPalabraActual(palabraSecreta);
         return acierto;
     }
-    
+
     public boolean hasGanado() {
         return palabraSecreta != null && palabraSecreta.equals(palabraActual);
     }
-    
-     private void cargarFigurasAhorcado() {
+
+    private void cargarFigurasAhorcado() {
         if (!figuraAhorcado.isEmpty()) {
             return;
         }
@@ -205,7 +207,58 @@ public class JuegoAhorcadoAzar extends JuegoAhorcadoBase {
 
     @Override
     public void Jugar() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        inicializarPalabraSecreta();
+
+        BlockingQueue<String> queue = new LinkedBlockingQueue<>();
+        AhorcadoAzarFrame.bindInputQueue(queue);
+
+        AhorcadoAzarFrame.actualizarInfo(figuraAhorcado.get(0),
+                formatearConEspacios(palabraActual),
+                Intentos, Max_Intentos, letraUsadas,
+                "Introduce una letra ");
+
+        boolean abandonar = false;
+
+        while (!hasGanado() && Intentos < Max_Intentos && !abandonar) {
+            try {
+                String jugada = queue.take();
+                if ("SALIR".equals(jugada)) {
+                    abandonar = true;
+                    break;
+                }
+                this.ultimaEntrada = jugada;
+                verificarLetra();
+
+                
+                int paso = Math.min(Intentos, figuraAhorcado.size() - 1);
+                AhorcadoFijoFrame.actualizarInfo(
+                        figuraAhorcado.get(paso),
+                        formatearConEspacios(palabraActual),
+                        Intentos, Max_Intentos, letraUsadas,
+                        ultimoMensaje
+                );
+            } catch (InterruptedException ignored) {
+            }
+        }
+
+        int paso = Math.min(Intentos, figuraAhorcado.size() - 1);
+        String mensajeFinal;
+        if (hasGanado()) {
+            mensajeFinal = "¡Has ganado! La palabra era: " + palabraSecreta;
+        } else if (abandonar || Intentos >= Max_Intentos) {
+            mensajeFinal = "HAS PERDIDO. La palabra era: " + palabraSecreta;
+        } else {
+            mensajeFinal = "Partida finalizada.";
+        }
+
+        AhorcadoAzarFrame.actualizarInfo(figuraAhorcado.get(paso),
+                formatearConEspacios(palabraActual),
+                Intentos, Max_Intentos, letraUsadas,
+                mensajeFinal);
+        AhorcadoAzarFrame.juegoTerminado(mensajeFinal);
     }
 
+    private String formatearConEspacios(String s) {
+        return (s == null) ? "" : s.replace("", " ").trim();
+    }
 }
