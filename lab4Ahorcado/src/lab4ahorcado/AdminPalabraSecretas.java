@@ -1,7 +1,7 @@
 package lab4ahorcado;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -11,54 +11,51 @@ import java.util.Random;
  */
 public class AdminPalabraSecretas {
 
-    ArrayList<String> PalabrasDisponibles;
-
-    List<String> PalabrasFijas = Arrays.asList(
-            "Avion", "Celeste", "Camerino", "Hipopotamo", "Lechuga",
-            "Moneda", "Leopardo", "Honduras", "Programacion", "Laboratorio"
-    );
+    private ArrayList<String> palabrasSecreta;
+    private Random random;
 
     public AdminPalabraSecretas() {
-        PalabrasDisponibles = new ArrayList(PalabrasFijas);
+        this.palabrasSecreta = PalabrasFijas.leerPalabras();
+        this.random = new Random();
     }
 
-    public void agregarPalabras(String nuevaPalabra) {
-        if (nuevaPalabra == null) {
-            return;
-        }
-        
-        Boolean validacionPalabra = validacionPalabras(nuevaPalabra);
-        if(!validacionPalabra){
-            return;
-        }
-        
-        PalabrasDisponibles.add(nuevaPalabra);
-    }
-
-    public String obtenerPalabras() {
-        Random rand = new Random();
-
-        int indice = rand.nextInt(PalabrasDisponibles.size());
-        String PalabraAleatoria = null;
-
-        int i = 0;
-        for (String palabra : PalabrasDisponibles) {
-            if (i == indice) {
-                PalabraAleatoria = palabra;
-                break;
-            }
-            i++;
+    public boolean agregarPalabra(String nuevaPalabra) {
+        if (nuevaPalabra == null || nuevaPalabra.trim().isEmpty()) {
+            return false;
         }
 
-        return PalabraAleatoria;
-    }
+        nuevaPalabra = nuevaPalabra.toLowerCase().trim();
 
-    public boolean validacionPalabras(String palabra) {
-        for (String pd : PalabrasDisponibles) {
-            if (pd.equalsIgnoreCase(palabra)) {
-                return false;
-            }
+        if (palabrasSecreta.contains(nuevaPalabra)) {
+            return false; 
         }
+
+        palabrasSecreta.add(nuevaPalabra);
+        PalabrasFijas.guardarPalabras(palabrasSecreta);
         return true;
     }
+
+
+    public String obtenerPalabra() {
+        if (palabrasSecreta.isEmpty()) {
+            return null;
+        }
+        int index = random.nextInt(palabrasSecreta.size());
+        return palabrasSecreta.get(index);
+    }
+
+
+    public List<String> listaPalabras() {
+        return Collections.unmodifiableList(palabrasSecreta);
+    }
+
+
+    public boolean existePalabra(String palabra) {
+        if (palabra == null) {
+            return false;
+        }
+        return palabrasSecreta.contains(palabra.toLowerCase().trim());
+    }
 }
+
+
